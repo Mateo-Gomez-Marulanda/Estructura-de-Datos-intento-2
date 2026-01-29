@@ -1,4 +1,4 @@
-package co.edu.uniquindio.poo.Unidad1.Collection.Laboratorio.Punto1;
+package co.edu.uniquindio.poo.Unidad1.Colecciones.Laboratorio.Punto1;
 
 import java.util.TreeSet;
 
