@@ -5,12 +5,13 @@ package co.edu.uniquindio.poo.Unidad1.Recursividad.Matriz;
 public class Main {
     public static void main(String[] args) {
         int[][] matriz = {
-                { 1, 2, 3 },
-                { 4, 5, 6 },
-                { 7, 8, 9 }
+                { 1, 2, 3, 10 },
+                { 4, 7, 6, 11 },
+                { 7, 8, 9, 12 }
         };
 
         recorrerMatriz(matriz, 0, 0);
+        System.out.println(sumarDiagonalPrincipal(matriz, 0, 0));
     }
 
     /*
@@ -35,5 +36,14 @@ public class Main {
             // una vez se recorrentodos las columnas de un fila se pasa a la siguientes
             recorrerMatriz(matriz, fila + 1, 0);
         }
+    }
+
+    private static int sumarDiagonalPrincipal(int[][] matriz, int fila, int columna) {
+
+        if (matriz.length == fila || matriz[fila].length == columna) {
+            return 0;
+        }
+
+        return matriz[fila][columna] + sumarDiagonalPrincipal(matriz, fila + 1, columna + 1);
     }
 }

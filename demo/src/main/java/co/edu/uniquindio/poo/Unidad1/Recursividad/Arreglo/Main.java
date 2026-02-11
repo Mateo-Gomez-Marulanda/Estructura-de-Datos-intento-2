@@ -49,8 +49,8 @@ public class Main {
 
         if (arreglo[index] > contador) {
             contador = arreglo[index];
-
         }
+        
         return numeroMayor(arreglo, index + 1, contador);
     }
 }
