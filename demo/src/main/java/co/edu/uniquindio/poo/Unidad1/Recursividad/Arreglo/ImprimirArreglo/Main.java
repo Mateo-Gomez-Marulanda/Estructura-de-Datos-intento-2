@@ -1,4 +1,4 @@
-package co.edu.uniquindio.poo.Unidad1.Recursividad.Arreglo;
+package co.edu.uniquindio.poo.Unidad1.Recursividad.Arreglo.ImprimirArreglo;
 
 public class Main {
     public static void main(String[] args) {
