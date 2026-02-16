@@ -9,7 +9,7 @@ public class Main {
         System.out.println(sumaRecurisva(arreglo, 0, arreglo.length - 1));
 
         System.out.println();
-        
+
         System.out.println("recursividad normal");
         System.out.println(sumarArreglo(arreglo, 0));
     }
@@ -36,5 +36,4 @@ public class Main {
         }
         return arreglo[index] + sumarArreglo(arreglo, index + 1);
     }
-
 }
