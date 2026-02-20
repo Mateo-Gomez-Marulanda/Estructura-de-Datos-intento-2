@@ -1,0 +1,18 @@
+hay una forma de implementar recursividad la cual implica crear dos metodos de 
+igual nombre pero uno siendo privado y el otro publico. Esto perimite que en el 
+metodo privado se implemente las acciones recursivas que cumplen la tarea
+y el metodo publico permite realizar acciones complementarias a la tarea 
+a cumplir
+
+
+#pseudo codigo
+
+public metod name(var varName){
+    suport conditional
+
+    metod name(var varName, var complementaryVar )
+}
+
+private metod name(var varName, var complementaryVar){
+    recurisive process;
+}

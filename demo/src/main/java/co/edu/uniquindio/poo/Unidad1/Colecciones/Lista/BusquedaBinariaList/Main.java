@@ -15,7 +15,7 @@ public class Main {
         lista.add(100);
 
         lista.sort(Integer::compareTo);
-
+        System.out.println(lista);
         /*
          * otras formas de ordenar la lista de elementos
          * 
@@ -32,7 +32,7 @@ public class Main {
          * lista.sort(Comparator.reverseOrder()); para organizar de manera decendente
          */
 
-        int busquedaBinaria = busquedaBinaria(lista, 0, lista.size() - 1, 6);
+        int busquedaBinaria = busquedaBinaria(lista, 0, lista.size() - 1, 4);
         System.out.println("indice elemento en la lista " + busquedaBinaria);
     }
 
@@ -50,8 +50,10 @@ public class Main {
         }
 
         if (n > lista.get(mitad)) {
+            // busca en el lado izquierdo
             return busquedaBinaria(lista, mitad + 1, cola, n);
         } else {
+            // busca en el lado derecho
             return busquedaBinaria(lista, cabeza, mitad - 1, n);
 
         }
