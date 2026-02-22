@@ -4,28 +4,6 @@ import java.util.ArrayList;
 
 import java.util.List;
 
-public class Main {
-    public static void main(String[] args) {
-
-        Universidad universidad = new Universidad("Universidad de los Andes", "Dr. Juan Pérez");
-        universidad.agregarEstudiante(new Estudiante("Ana", "12345", 4.5));
-        universidad.agregarEstudiante(new Estudiante("Carlos", "12346", 3.8));
-        universidad.agregarEstudiante(new Estudiante("María", "12347", 4.2));
-        universidad.agregarEstudiante(new Estudiante("Luis", "12348", 3.5));
-
-        universidad.obtenerMayorPromedio();
-        universidad.obtenerMenorPromedio();
-
-        universidad.consultarRanking();
-
-        universidad.actualizarPromedioEstudiante("12348", 4.6);
-        universidad.obtenerMayorPromedio();
-        universidad.consultarRanking();
-        universidad.eliminarEstudiante("12345");
-
-    }
-}
-
 class Estudiante implements Comparable<Estudiante> {
     private String nombre;
     private String id;
@@ -139,5 +117,27 @@ class Universidad {
     public void consultarRanking() {
         ordenarEstudiantes();
         System.out.println(estudiantes);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+
+        Universidad universidad = new Universidad("Universidad de los Andes", "Dr. Juan Pérez");
+        universidad.agregarEstudiante(new Estudiante("Ana", "12345", 4.5));
+        universidad.agregarEstudiante(new Estudiante("Carlos", "12346", 3.8));
+        universidad.agregarEstudiante(new Estudiante("María", "12347", 4.2));
+        universidad.agregarEstudiante(new Estudiante("Luis", "12348", 3.5));
+
+        universidad.obtenerMayorPromedio();
+        universidad.obtenerMenorPromedio();
+
+        universidad.consultarRanking();
+
+        universidad.actualizarPromedioEstudiante("12348", 4.6);
+        universidad.obtenerMayorPromedio();
+        universidad.consultarRanking();
+        universidad.eliminarEstudiante("12345");
+
     }
 }
