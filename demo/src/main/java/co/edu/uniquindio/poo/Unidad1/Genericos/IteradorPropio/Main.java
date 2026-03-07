@@ -24,6 +24,24 @@ public class Main {
         MaxIterator<Persona> maxIteratorPersona = new MaxIterator<>(personas);
         Persona maximoPersona = maxIteratorPersona.getMax();
         System.out.println("La persona con la edad máxima es: " + maximoPersona);
+
+        // ejemplo de uso del iterador propio personalizado
+        System.out.println("\n--- Usando Iterador Propio ---");
+        Iterador<Integer> iteradorNumeros = new Iterador<>(numeros);
+        System.out.println("Máximo con iterador propio: " + iteradorNumeros.getMaximo());
+
+        // Usando el iterador directamente con foreach
+        Iterador<String> iteradorPalabras = new Iterador<>(palabras);
+        for (String max : iteradorPalabras) {
+            System.out.println("Palabra máxima usando foreach: " + max);
+        }
+
+        // Con personas usando iterator manual
+        Iterador<Persona> iteradorPersonas = new Iterador<>(personas);
+        Iterator<Persona> iter = iteradorPersonas.iterator();
+        if (iter.hasNext()) {
+            System.out.println("Persona máxima: " + iter.next());
+        }
     }
 
 }
@@ -87,6 +105,75 @@ class Persona implements Comparable<Persona> {
 
     @Override
     public String toString() {
-        return nombre + " (" + edad + " años)";
+        return "Persona [nombre=" + nombre + ", edad=" + edad + "]";
     }
 }
+
+/**
+ * Iterador propio que implementa Iterable para obtener el mayor elemento
+ * de una colección genérica
+ */
+class Iterador<T extends Comparable<T>> implements Iterable<T> {
+    private Collection<? extends T> collection;
+
+    public Iterador(Collection<? extends T> collection) {
+        this.collection = collection;
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new MaxElementIterator<>(collection);
+    }
+
+    /**
+     * Iterador personalizado que encuentra y devuelve solo el elemento máximo
+     */
+    private static class MaxElementIterator<T extends Comparable<T>> implements Iterator<T> {
+        private T maxElement;
+        private boolean hasReturned = false;
+
+        public MaxElementIterator(Collection<? extends T> collection) {
+            if (collection != null && !collection.isEmpty()) {
+                // Encuentra el elemento máximo al crear el iterador
+                Iterator<? extends T> iter = collection.iterator();
+                maxElement = iter.next();
+
+                while (iter.hasNext()) {
+                    T current = iter.next();
+                    if (current.compareTo(maxElement) > 0) {
+                        maxElement = current;
+                    }
+                }
+            }
+        }
+
+        @Override
+        public boolean hasNext() {
+            // Solo devuelve true si aún no se ha retornado el máximo
+            return maxElement != null && !hasReturned;
+        }
+
+        @Override
+        public T next() {
+            if (!hasNext()) {
+                throw new IllegalStateException("No hay más elementos");
+            }
+            hasReturned = true;
+            return maxElement;
+        }
+    }
+
+    /**
+     * Método de conveniencia para obtener directamente el máximo
+     * 
+     * @return el elemento máximo de la colección o null si está vacía
+     */
+    public T getMaximo() {
+        if (collection == null || collection.isEmpty()) {
+            return null;
+        }
+        return iterator().next();
+    }
+}
+
+ 
