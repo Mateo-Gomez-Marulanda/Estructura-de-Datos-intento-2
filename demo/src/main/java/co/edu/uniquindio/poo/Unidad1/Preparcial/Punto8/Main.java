@@ -69,6 +69,6 @@ class Pair<S1, S2> {
 
     @Override
     public String toString() {
-        return "Pair [mitad1=" + mitad1 + ", mitad2=" + mitad2 + "]";
+        return "Pair mitad1: " + mitad1 + ", mitad2: " + mitad2;
     }
 }
