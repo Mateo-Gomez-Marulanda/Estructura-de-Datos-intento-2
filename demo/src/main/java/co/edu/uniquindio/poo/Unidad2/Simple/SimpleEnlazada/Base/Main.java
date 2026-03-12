@@ -19,7 +19,7 @@ public class Main {
         integers.printList();
 
         integers.addLast(13);
-        integers.remove(2);  
+        integers.remove(2);
         integers.printList();
 
     }

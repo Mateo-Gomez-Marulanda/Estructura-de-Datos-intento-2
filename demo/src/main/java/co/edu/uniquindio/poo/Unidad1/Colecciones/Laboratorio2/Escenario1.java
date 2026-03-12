@@ -1,4 +1,5 @@
 package co.edu.uniquindio.poo.Unidad1.Colecciones.Laboratorio2;
+
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -6,7 +7,7 @@ public class Escenario1 {
 
     public static void main(String[] args) {
 
-        int[] sizes = {100, 1000, 10000, 100000};
+        int[] sizes = { 100, 1000, 10000, 100000 };
 
         for (int n : sizes) {
 
@@ -19,7 +20,6 @@ public class Escenario1 {
 
             long memoryBefore = runtime.totalMemory() - runtime.freeMemory();
 
-            
             for (int i = 0; i < n; i++) {
                 Patient p = new Patient("Paciente" + i, "ID" + i);
                 h.addPacient(p);
@@ -27,7 +27,6 @@ public class Escenario1 {
 
             long memoryAfter = runtime.totalMemory() - runtime.freeMemory();
 
-            
             long start = System.nanoTime();
 
             h.searchPacient("ID" + (n - 1));
@@ -58,7 +57,7 @@ class Hospital {
         Patient patientWanted = null;
 
         for (Patient patient : s) {
-            if (patient.getId().equals(id)) { 
+            if (patient.getId().equals(id)) {
                 patientWanted = patient;
                 break;
             }

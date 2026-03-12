@@ -6,14 +6,14 @@ import java.util.Queue;
 public class Escenario3 {
     public static void main(String[] args) {
 
-        int[] sizes = {100, 1000, 10000, 100000};
+        int[] sizes = { 100, 1000, 10000, 100000 };
 
         for (int size : sizes) {
 
             PlataformTaxi p = new PlataformTaxi();
 
             Runtime runtime = Runtime.getRuntime();
-             // Limpia memoria aproximada
+            // Limpia memoria aproximada
             runtime.gc();
 
             long memoryBefore = runtime.totalMemory() - runtime.freeMemory();
@@ -46,21 +46,21 @@ public class Escenario3 {
 class PlataformTaxi {
     Queue<Request> requests = new LinkedList<>();
 
-    public void addRequest(Request request){
+    public void addRequest(Request request) {
         requests.add(request);
     }
 
-    public Request attendRequest(){
+    public Request attendRequest() {
         return requests.poll();
     }
 
-    public void showRequests(){
+    public void showRequests() {
         for (Request request : requests) {
             System.out.println(request);
         }
     }
 
-    public void cancelRequest(Request request){
+    public void cancelRequest(Request request) {
         requests.remove(request);
     }
 }
@@ -69,7 +69,7 @@ class Request {
     private String id;
     private String destination;
     private String arrival;
-    
+
     public Request(String id, String destination, String arrival) {
         this.id = id;
         this.destination = destination;
@@ -81,5 +81,4 @@ class Request {
         return "Request [id=" + id + ", destination=" + destination + ", arrival=" + arrival + "]";
     }
 
-    
 }
