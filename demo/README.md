@@ -2,6 +2,18 @@
 
 Descripciín basisca de su Proyecto de POO ...
 
+## ⚠️ IMPORTANTE: Cambio de Rama
+
+**Para acceder al resto de archivos del proyecto, debe cambiar a la rama `repoJava21`.**
+
+Debido a problemas con el manejo de versiones de Java en el repositorio principal, todo el contenido del proyecto se encuentra en la rama `repoJava21`.
+
+Para cambiar de rama, use el siguiente comando:
+
+```shell
+git checkout repoJava21
+```
+
 # Autores
 
 - Autor 1
