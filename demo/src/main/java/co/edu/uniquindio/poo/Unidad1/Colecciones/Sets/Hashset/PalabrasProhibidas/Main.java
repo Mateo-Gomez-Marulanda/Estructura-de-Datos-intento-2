@@ -38,7 +38,7 @@ public class Main {
          * [\\s,\\.\\?!]+ ]
          * 
          */
-        
+
         String[] palabras = mensaje.toLowerCase().split("\\s+");
 
         for (String palabra : palabras) {

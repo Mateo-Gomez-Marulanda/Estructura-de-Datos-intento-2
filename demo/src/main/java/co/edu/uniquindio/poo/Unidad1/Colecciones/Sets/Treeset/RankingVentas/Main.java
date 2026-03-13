@@ -90,7 +90,6 @@ class Vendedor implements Comparable<Vendedor> {
 
         return comparacion;
     }
-
 }
 
 class Empresa {

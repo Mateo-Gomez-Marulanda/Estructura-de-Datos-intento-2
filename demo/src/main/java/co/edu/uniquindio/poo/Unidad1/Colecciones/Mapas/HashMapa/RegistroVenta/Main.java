@@ -27,7 +27,7 @@ public class Main {
         RegistroVenta registro = new RegistroVenta();
 
         Venta venta1 = new Venta("001", "Producto A", 10, 100);
-        Venta venta2 = new Venta("004", "Producto B", 5, 50);
+        Venta venta2 = new Venta("094", "Producto B", 5, 50);
         Venta venta3 = new Venta("002", "Producto C", 20, 200);
         Venta venta4 = new Venta("001", "Producto A", 15, 150); // mismo código que venta1
         Venta venta5 = new Venta("003", "Producto D", 8, 80);

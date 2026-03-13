@@ -1,2 +1,4 @@
 como contenido adicional se usan los temas relacionados a Comparable, Comparator, Iterable e Iterator para realizar
 operaciones, crear metodos y demas acciones en colecciones y genericos
+
+ademas de implementar ciertos iteradores personalizados basandose el patron de diseño Iterator
