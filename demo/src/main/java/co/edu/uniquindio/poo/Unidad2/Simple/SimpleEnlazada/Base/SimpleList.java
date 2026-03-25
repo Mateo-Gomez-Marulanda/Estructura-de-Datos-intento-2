@@ -1,0 +1,292 @@
+package co.edu.uniquindio.poo.Unidad2.Simple.SimpleEnlazada.Base;
+
+public class SimpleList<T> {
+    private Node<T> first;
+    private int size;
+
+    public SimpleList() {
+        this.first = null;
+        this.size = 0;
+    }
+
+    public void addFirst(T data) {
+        Node<T> newNode = new Node<>(data);
+
+        if (isEmpty()) {
+            first = newNode;
+        } else {
+            newNode.setNextNode(first);
+            first = newNode;
+        }
+        size++;
+    }
+
+    public void addLast(T data) {
+        Node<T> newNode = new Node<>(data);
+
+        if (isEmpty()) {
+            first = newNode;
+        } else {
+            Node<T> aux = first;
+            while (aux.getNextNode() != null) {
+                aux = aux.getNextNode();
+            }
+            aux.setNextNode(newNode);
+            size++;
+        }
+    }
+
+    public void add(T data, int index) {
+        if (index < 0 || index > size) {
+            throw new RuntimeException("error index");
+        }
+
+        if (isEmpty()) {
+            throw new RuntimeException("list is empty");
+        } else {
+            if (index == 0) {
+                addFirst(data);
+                return;
+            }
+            if (index == size) {
+                addLast(data);
+                return;
+            }
+        }
+
+        Node<T> aux = first;
+        for (int i = 0; i < index - 1; i++) {
+            aux = aux.getNextNode();
+        }
+
+        Node<T> next = new Node<>(data);
+        next.setNextNode(aux.getNextNode());
+        aux.setNextNode(next);
+
+        size++;
+    }
+
+    public void removeFirst() {
+        if (isEmpty()) {
+            throw new RuntimeException("list is empty");
+        } else {
+            Node<T> next = first.getNextNode(); // obtiene el siguiente nodo al primero
+            first.setdata(null); // cambia el primer nodo a null
+            first = next; // el primer nodo es ahora el siguiente
+            size--;
+        }
+    }
+
+    public void removeLast() {
+        if (isEmpty()) {
+            throw new RuntimeException("list is empty");
+        } else {
+            Node<T> aux = first;
+            while (aux.getNextNode().getNextNode() != null) {
+                aux = aux.getNextNode();
+            }
+            aux.setNextNode(null);
+            size--;
+        }
+    }
+
+    // elimina en base al indice
+    public void removeIndex(int index) {
+        if (index < 0 || index > size) {
+            throw new RuntimeException("error index");
+        }
+
+        if (isEmpty()) {
+            throw new RuntimeException("list is empty");
+        } else {
+            if (index == 0) {
+                removeFirst();
+                return;
+            }
+            if (index == size - 1) {
+                removeLast();
+                return;
+            }
+        }
+
+        Node<T> aux = first;
+        for (int i = 1; i == index - 1; i++) {
+            aux = aux.getNextNode();
+        }
+
+        aux.setNextNode(aux.getNextNode().getNextNode());
+        size--;
+    }
+
+    // eliminar en base al dato
+    public void removeValue(T data) {
+        if (isEmpty()) {
+            throw new RuntimeException("list is empty");
+        }
+
+        Node<T> aux = first;
+        while (aux != null) {
+            if (aux.getdata().equals(data)) {
+                aux.setNextNode(aux.getNextNode().getNextNode());
+            }
+            aux = aux.getNextNode();
+        }
+        size--;
+    }
+
+    public boolean isEmpty() {
+        if (size == 0) {
+            return true;
+        }
+        return false;
+    }
+
+    public int size() {
+        return size;
+    }
+
+    public void printList() {
+        Node<T> aux = first;
+        String message = "[";
+        do {
+            message += aux.getdata() + " ";
+            aux = aux.getNextNode();
+        } while (aux != null);
+
+        message += "]";
+        System.out.println(message);
+    }
+
+    public void reverse() {
+        if (isEmpty() || size == 1) {
+            return;
+        }
+        first = reverseRecursive(first);
+    }
+
+    private Node<T> reverseRecursive(Node<T> node) {
+        // base case: last node becomes new head
+        if (node.getNextNode() == null) {
+            return node;
+        }
+        Node<T> head = reverseRecursive(node.getNextNode());
+
+        // reverse the link
+        node.getNextNode().setNextNode(node);
+
+        // set current.next to null (important for the original head)
+        node.setNextNode(null);
+
+        return head;
+    }
+
+    public T get(int index) {
+        if (isEmpty()) {
+            throw new RuntimeException("list is empty");
+        }
+
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("Index: " + index);
+        }
+
+        Node<T> aux = first;
+        for (int i = 0; i < index; i++) {
+            aux = aux.getNextNode();
+        }
+        return aux.getdata();
+    }
+
+    public int indexOf(T data) {
+        if (isEmpty()) {
+            throw new RuntimeException("list is empty");
+        }
+
+        Node<T> aux = first;
+        int cont = 0;
+        while (aux != null) {
+            if (aux.getdata().equals(data)) {
+                return cont;
+            }
+            aux = aux.getNextNode();
+            cont++;
+        }
+        return -1;
+    }
+
+    public boolean validIndex(int index) {
+        if (index < 0 || index > size) {
+            return false;
+        }
+        return true;
+    }
+
+    public void modifyNode(int index, T newData) {
+        if (!validIndex(index) || index == size) {
+            throw new IndexOutOfBoundsException("Invalid index: " + index);
+        }
+
+        if (isEmpty()) {
+            throw new RuntimeException("list is empty");
+        }
+
+        Node<T> aux = first;
+        for (int i = 0; i < index; i++) {
+            aux = aux.getNextNode();
+        }
+        aux.setdata(newData);
+    }
+
+    @SuppressWarnings("unchecked")
+    public void sortList() {
+        if (isEmpty() || size == 1) {
+            return;
+        }
+
+        boolean swapped;
+        do {
+            swapped = false;
+            Node<T> aux = first;
+
+            while (aux.getNextNode() != null) {
+                Comparable<T> currentData = (Comparable<T>) aux.getdata();
+                int comparison = currentData.compareTo(aux.getNextNode().getdata());
+
+                if (comparison > 0) {
+                    T temp = aux.getdata();
+                    aux.setdata(aux.getNextNode().getdata());
+                    aux.getNextNode().setdata(temp);
+                    swapped = true;
+                }
+                aux = aux.getNextNode();
+            }
+        } while (swapped);
+    }
+
+    public java.util.Iterator<T> iterator() {
+        return new ListIterator();
+    }
+
+    private class ListIterator implements java.util.Iterator<T> {
+        private Node<T> current = first;
+
+        @Override
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        @Override
+        public T next() {
+            if (!hasNext()) {
+                throw new java.util.NoSuchElementException();
+            }
+            T data = current.getdata();
+            current = current.getNextNode();
+            return data;
+        }
+    }
+
+    public void clearList() {
+        first = null;
+        size = 0;
+    }
+}
