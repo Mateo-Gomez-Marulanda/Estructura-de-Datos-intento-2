@@ -1,10 +1,10 @@
-package co.edu.uniquindio.poo.Unidad2.Simple.SimpleEnlazada.Base;
+package co.edu.uniquindio.poo.Unidad2.ListasSimples.SimpleEnlazada;
 
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        SimpleList<Integer> integers = new SimpleList<>();
+        SimpleLinkedList<Integer> integers = new SimpleLinkedList<>();
 
         System.out.println("La lista esta vacia? " + integers.isEmpty());
         integers.addFirst(2);
@@ -28,22 +28,25 @@ public class Main {
         integers.printList();
 
         System.out.println("\nvalor en la posicion 3: " + integers.get(3));
-        
+
         System.out.println("buscando posicion... " + integers.indexOf(3));
-       
+
         System.out.println();
 
-        integers.removeValue(3);
+        integers.removeElement(3);
         integers.printList();
-
 
         System.out.println("\ninvertir lista");
         integers.reverse();
         integers.printList();
 
+        for (Integer data : integers) {
+            System.out.println(data);
+        }
+
         // List<Integer> list = List.of(12, 3, 4, 5, 6);
-        //  System.out.println(list.get(4) + " " + list.size());
-        //  System.out.println(list.indexOf(4));
-        //  list.reversed()   ;
+        // System.out.println(list.get(4) + " " + list.size());
+        // System.out.println(list.indexOf(4));
+        // list.reversed() ;
     }
 }

@@ -1,12 +1,22 @@
-package co.edu.uniquindio.poo.Unidad2.Simple.SimpleEnlazada.Base;
+package co.edu.uniquindio.poo.Unidad2.ListasSimples.SimpleDobleEnlazada;
 
 public class Node<T> {
+    private Node<T> previousNode;
     private Node<T> nextNode;
     private T data;
 
     public Node(T data) {
         this.nextNode = null;
+        this.previousNode = null;
         this.data = data;
+    }
+
+    public Node<T> getPreviousNode() {
+        return previousNode;
+    }
+
+    public void setPreviousNode(Node<T> previousNode) {
+        this.previousNode = previousNode;
     }
 
     public Node<T> getNextNode() {

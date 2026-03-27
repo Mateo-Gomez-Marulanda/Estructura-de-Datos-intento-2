@@ -1,12 +1,37 @@
-package co.edu.uniquindio.poo.Unidad2.Simple.SimpleEnlazada.Base;
+package co.edu.uniquindio.poo.Unidad2.ListasSimples.SimpleEnlazada;
 
-public class SimpleList<T> {
+import java.util.Iterator;
+
+public class SimpleLinkedList<T> implements Iterable<T> {
     private Node<T> first;
     private int size;
 
-    public SimpleList() {
+    public SimpleLinkedList() {
         this.first = null;
         this.size = 0;
+    }
+
+    public boolean isEmpty() {
+        if (size == 0) {
+            return true;
+        }
+        return false;
+    }
+
+    public int size() {
+        return size;
+    }
+
+    public boolean validIndex(int index) {
+        if (index < 0 || index > size) {
+            return false;
+        }
+        return true;
+    }
+
+    public void clearList() {
+        first = null;
+        size = 0;
     }
 
     public void addFirst(T data) {
@@ -92,7 +117,7 @@ public class SimpleList<T> {
 
     // elimina en base al indice
     public void removeIndex(int index) {
-        if (index < 0 || index > size) {
+        if (!validIndex(index)) {
             throw new RuntimeException("error index");
         }
 
@@ -119,67 +144,29 @@ public class SimpleList<T> {
     }
 
     // eliminar en base al dato
-    public void removeValue(T data) {
+    public void removeElement(T data) {
         if (isEmpty()) {
             throw new RuntimeException("list is empty");
         }
 
+        if (first.getdata().equals(data)) {
+            removeFirst();
+            return;
+        }
+
         Node<T> aux = first;
         while (aux != null) {
-            if (aux.getdata().equals(data)) {
+            if (aux.getNextNode().getdata().equals(data)) {
                 aux.setNextNode(aux.getNextNode().getNextNode());
+                size--;
+                return;
             }
             aux = aux.getNextNode();
         }
-        size--;
+        throw new RuntimeException("Element not found: " + data);
     }
 
-    public boolean isEmpty() {
-        if (size == 0) {
-            return true;
-        }
-        return false;
-    }
-
-    public int size() {
-        return size;
-    }
-
-    public void printList() {
-        Node<T> aux = first;
-        String message = "[";
-        do {
-            message += aux.getdata() + " ";
-            aux = aux.getNextNode();
-        } while (aux != null);
-
-        message += "]";
-        System.out.println(message);
-    }
-
-    public void reverse() {
-        if (isEmpty() || size == 1) {
-            return;
-        }
-        first = reverseRecursive(first);
-    }
-
-    private Node<T> reverseRecursive(Node<T> node) {
-        // base case: last node becomes new head
-        if (node.getNextNode() == null) {
-            return node;
-        }
-        Node<T> head = reverseRecursive(node.getNextNode());
-
-        // reverse the link
-        node.getNextNode().setNextNode(node);
-
-        // set current.next to null (important for the original head)
-        node.setNextNode(null);
-
-        return head;
-    }
-
+    // OBTIENE EL DATO SEGUN EL INDICE
     public T get(int index) {
         if (isEmpty()) {
             throw new RuntimeException("list is empty");
@@ -196,6 +183,7 @@ public class SimpleList<T> {
         return aux.getdata();
     }
 
+    // OBTIENE EL INDICE SEGUN EL DATO
     public int indexOf(T data) {
         if (isEmpty()) {
             throw new RuntimeException("list is empty");
@@ -213,13 +201,7 @@ public class SimpleList<T> {
         return -1;
     }
 
-    public boolean validIndex(int index) {
-        if (index < 0 || index > size) {
-            return false;
-        }
-        return true;
-    }
-
+    // MODIFICA EL NODO SEGUN EL INDICE
     public void modifyNode(int index, T newData) {
         if (!validIndex(index) || index == size) {
             throw new IndexOutOfBoundsException("Invalid index: " + index);
@@ -236,6 +218,7 @@ public class SimpleList<T> {
         aux.setdata(newData);
     }
 
+    // NI PERRA IDEA QUE HACE PERO SUPUESTAMENTE ORDENA
     @SuppressWarnings("unchecked")
     public void sortList() {
         if (isEmpty() || size == 1) {
@@ -262,31 +245,51 @@ public class SimpleList<T> {
         } while (swapped);
     }
 
-    public java.util.Iterator<T> iterator() {
-        return new ListIterator();
+    // IMPRIME LA LISTA DE TAL FORMA QUE QUEDE SIMILARA UNA LISTA PROPIA DE JAVA
+    public void printList() {
+        Node<T> aux = first;
+        String message = "[";
+        do {
+            message += aux.getdata() + " ";
+            aux = aux.getNextNode();
+        } while (aux != null);
+
+        message += "]";
+        System.out.println(message);
     }
 
-    private class ListIterator implements java.util.Iterator<T> {
-        private Node<T> current = first;
-
-        @Override
-        public boolean hasNext() {
-            return current != null;
+    // ITERADOR PROPIO PARA PODER USAR FOR-EACH O DEMAS METODOS ITERABLE
+    @Override
+    public Iterator<T> iterator() {
+        if (isEmpty()) {
+            throw new RuntimeException("list is empty");
         }
 
-        @Override
-        public T next() {
-            if (!hasNext()) {
-                throw new java.util.NoSuchElementException();
-            }
-            T data = current.getdata();
-            current = current.getNextNode();
-            return data;
-        }
+        return new SimpleLinkedListIterator<T>(first);
     }
 
-    public void clearList() {
-        first = null;
-        size = 0;
+    // CASOS RECURSIVOS
+    public void reverse() {
+        if (isEmpty() || size == 1) {
+            return;
+        }
+        first = reverseRecursive(first);
     }
+
+    private Node<T> reverseRecursive(Node<T> node) {
+        // base case: last node becomes new head
+        if (node.getNextNode() == null) {
+            return node;
+        }
+        Node<T> head = reverseRecursive(node.getNextNode());
+
+        // reverse the link
+        node.getNextNode().setNextNode(node);
+
+        // set current.next to null (important for the original head)
+        node.setNextNode(null);
+
+        return head;
+    }
+
 }

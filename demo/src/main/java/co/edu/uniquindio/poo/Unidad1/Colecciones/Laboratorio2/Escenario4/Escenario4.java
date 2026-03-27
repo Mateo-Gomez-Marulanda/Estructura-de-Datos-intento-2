@@ -1,4 +1,4 @@
-package co.edu.uniquindio.poo.Unidad1.Colecciones.Laboratorio2;
+package co.edu.uniquindio.poo.Unidad1.Colecciones.Laboratorio2.Escenario4;
 
 import java.util.*;
 
