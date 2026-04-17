@@ -81,5 +81,14 @@ public class Queue<T> implements Iterable<T> {
         return new QueueIterator<T>(front);
     }
 
-    
+    // metodo recursivo para invertir la cola
+    public void reverse() {
+        if (isEmpty()) {
+            return;
+        } else {
+            T data = dequeue(); // se desencola
+            reverse(); // se ejecutra el metodo recursivo una vez la cola este vacia
+            enqueue(data); // se encola
+        }
+    }
 }
