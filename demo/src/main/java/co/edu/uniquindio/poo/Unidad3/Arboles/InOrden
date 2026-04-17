@@ -1,0 +1,26 @@
+en este recorrido muestras los nodos Izquierda, raiz, derecha.
+
+algoritmo
+1. recorre el subarbol Izquierdo (I) en orden
+2. visitar el nodo raiz
+3. recorrer el subarbol derecho en orden
+
+ejemplo
+
+1)
+Arbol
+A (B (C, D(E)), F(G(H(I,J))))
+
+recorrido 
+C,F,D,E,A,F,I,H,J,G
+
+2)
+Arbol 
+20(13,32)
+
+
+6,9,10,13,14,18,17,32,24,26,25, 34, (incompleto, posiblemente malo)
+
+
+3)
+4,17,34,77,79,104,137,151,153,180,188,268,273,278,292,306,388,322,331...
