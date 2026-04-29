@@ -13,11 +13,6 @@ public class Tree<T extends Comparable<T>> {
         return size;
     }
 
-    //verifica que el nodo actual tenga al menos un hijo
-    private boolean hasSon(Node<T> node) {
-        return node.getLeft() != null || node.getRight() != null;
-    }
-
     public void put(T data) {
         Node<T> newNodo = new Node<>(data);
         if (root == null) {
@@ -60,7 +55,65 @@ public class Tree<T extends Comparable<T>> {
     }
 
     public void remove(T data) {
-        
+        if (data == null) {
+            throw new IllegalArgumentException("The data cannot be null");
+        }
+        root = removeR(root, data);
+    }
+
+    // metodo recursivo para eliminar un nodo del árbol
+    private Node<T> removeR(Node<T> current, T data) {
+        if (current == null) {
+            return null; // Valor no encontrado
+        }
+
+        int comparacion = data.compareTo(current.getValue());
+
+        if (comparacion < 0) {
+            // El valor está en el subárbol izquierdo
+            current.setLeft(removeR(current.getLeft(), data));
+        } else if (comparacion > 0) {
+            // El valor está en el subárbol derecho
+            current.setRight(removeR(current.getRight(), data));
+        } else {
+            // Nodo encontrado - tres casos:
+
+            // Caso 1: Nodo sin hijos (hoja)
+            if (current.getLeft() == null && current.getRight() == null) {
+                size--;
+                return null;
+            }
+
+            // Caso 2: Nodo con solo hijo derecho
+            if (current.getLeft() == null) {
+                size--;
+                return current.getRight();
+            }
+
+            // Caso 3: Nodo con solo hijo izquierdo
+            if (current.getRight() == null) {
+                size--;
+                return current.getLeft();
+            }
+
+            // Caso 4: Nodo con dos hijos
+            // Encontrar el nodo más pequeño del subárbol derecho (sucesor inorden)
+            Node<T> minRight = findMin(current.getRight());
+            // Reemplazar el valor del nodo actual con el valor del sucesor
+            current.setValue(minRight.getValue());
+            // Eliminar el nodo sucesor del subárbol derecho
+            current.setRight(removeR(current.getRight(), minRight.getValue()));
+        }
+
+        return current;
+    }
+
+    // metodo auxiliar para encontrar el nodo con el valor mínimo en un subárbol
+    private Node<T> findMin(Node<T> current) {
+        while (current.getLeft() != null) {
+            current = current.getLeft();
+        }
+        return current;
     }
 
     public boolean binarySearch(T data) {

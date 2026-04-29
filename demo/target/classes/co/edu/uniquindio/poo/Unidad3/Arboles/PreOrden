@@ -1,0 +1,16 @@
+raiz, izquierda, derecha
+
+este tipo de recorrido se llama preorden, y se caracteriza por visitar primero la raiz, 
+luego el subarbol izquierdo y finalmente el subarbol derecho.
+
+algoritmo
+1. visitar el nodo raiz
+2. recorrer el subarbol izquierdo en preorden
+3. recorrer el subarbol derecho en preorden
+
+ejemplo
+1)
+20,13,9,6,10,18,14,17,32,26,24,29,36,34,40
+
+2)
++,*,a,b,c -> (a*b) + c

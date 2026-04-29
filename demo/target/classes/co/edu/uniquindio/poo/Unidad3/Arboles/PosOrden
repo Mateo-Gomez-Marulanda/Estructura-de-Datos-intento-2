@@ -1,0 +1,14 @@
+izquierda,derecha,raiz
+
+en este recorrido se visitan primero los nodos del subarbol izquierdo,
+luego los nodos del subarbol derecho y finalmente el nodo raiz.
+
+algoritmo
+1. recorrer el subarbol izquierdo en posorden
+2. recorrer el subarbol derecho en posorden
+3. visitar el nodo raiz
+
+ejemplo 
+
+1)
+6,10,9,14,1,17,18,13,24,29,26,3,40,36,32,20

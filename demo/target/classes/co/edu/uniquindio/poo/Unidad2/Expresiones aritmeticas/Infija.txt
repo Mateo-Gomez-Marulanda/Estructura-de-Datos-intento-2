@@ -1,0 +1,13 @@
+notacion infija
+
+r = (a+b)/(c*d)-e
+
+es la forma tradicional en la que se escriben las expresiones matematicas en programacion
+se sigue una jerarquia de operadores 
+
+1 ()
+2 **
+3 * /
+4 + -
+nota: en caso de haber dos operadores de mismo nivel jerarquico 
+se resuelve de izquierda a derecha
