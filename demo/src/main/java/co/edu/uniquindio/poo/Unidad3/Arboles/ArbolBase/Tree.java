@@ -1,8 +1,12 @@
-package co.edu.uniquindio.poo.Unidad3.Arboles.ArbolBase;
+package  co.edu.uniquindio.poo.Unidad3.Arboles.ArbolBase;
+
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class Tree<T extends Comparable<T>> {
     private Node<T> root;
     private int size;
+    private boolean encontrado; // Para rastrear si se encontró un nodo en remove
 
     public Tree() {
         this.root = null;
@@ -13,20 +17,33 @@ public class Tree<T extends Comparable<T>> {
         return size;
     }
 
-    public void put(T data) {
-        Node<T> newNodo = new Node<>(data);
+    public Node<T> root() {
+        return root;
+    }
+
+    public boolean isEmpty() {
+        return root == null;
+    }
+
+    public boolean put(T data) {
+        if (data == null) {
+            throw new IllegalArgumentException("The data cannot be null");
+        }
         if (root == null) {
-            root = newNodo;
+            root = new Node<>(data);
+            size++;
+            return true;
         } else {
-            putR(data, root);
+            return putR(data, root);
         }
     }
 
-    // metodo recursivo para agregar un nodo
-    private void putR(T data, Node<T> current) {
+    // metodo recursivo para agregar un nodo - retorna true si se insertó, false si
+    // ya existe
+    private boolean putR(T data, Node<T> current) {
 
         if (data.equals(current.getValue())) { // condicion para no aceptar repetidos
-            System.out.print("not added, the value already exists in the tree.");
+            return false; // Ya existe, no se agregó
 
         } else if (data.compareTo(current.getValue()) < 0) {
             // Si data es MENOR que current, va a la IZQUIERDA
@@ -35,10 +52,11 @@ public class Tree<T extends Comparable<T>> {
                 Node<T> newNode = new Node<>(data);
                 current.setLeft(newNode); // se asigna el nuevo nodo a la izquierda del nodo actual
                 size++;
+                return true; // Se agregó exitosamente
             } else {
-                // lamado recursivo para seguir buscando el lugar correcto en el subarbol
+                // llamado recursivo para seguir buscando el lugar correcto en el subarbol
                 // izquierdo
-                putR(data, current.getLeft());
+                return putR(data, current.getLeft());
             }
         } else {
             // Si data es MAYOR que current, va a la DERECHA
@@ -46,19 +64,22 @@ public class Tree<T extends Comparable<T>> {
                 Node<T> newNode = new Node<>(data);
                 current.setRight(newNode); // se asigna el nuevo nodo a la derecha del nodo actual
                 size++;
+                return true; // Se agregó exitosamente
             } else {
                 // llamado recursivo para seguir buscando el lugar correcto en el subarbol
                 // derecho
-                putR(data, current.getRight());
+                return putR(data, current.getRight());
             }
         }
     }
 
-    public void remove(T data) {
+    public boolean remove(T data) {
         if (data == null) {
             throw new IllegalArgumentException("The data cannot be null");
         }
+        encontrado = false;
         root = removeR(root, data);
+        return encontrado; // Retorna true si se eliminó, false si no existía
     }
 
     // metodo recursivo para eliminar un nodo del árbol
@@ -76,7 +97,8 @@ public class Tree<T extends Comparable<T>> {
             // El valor está en el subárbol derecho
             current.setRight(removeR(current.getRight(), data));
         } else {
-            // Nodo encontrado - tres casos:
+            // Nodo encontrado
+            encontrado = true; // Marcar que se encontró el nodo
 
             // Caso 1: Nodo sin hijos (hoja)
             if (current.getLeft() == null && current.getRight() == null) {
@@ -122,6 +144,62 @@ public class Tree<T extends Comparable<T>> {
         }
         return binarySearchR(root, data); // se llama al metodo recursivo
     }
+    public void weight(){
+        if (root == null) {
+            System.out.println("El árbol está vacío");
+        } else {
+            int weight = weightR(root);
+            System.out.println("El peso del árbol es: " + weight);
+        }
+    }
+
+    private int weightR(Node<T> current) {
+        if (current == null) {
+            return 0;
+        }
+        int leftWeight = weightR(current.getLeft());
+        int rightWeight = weightR(current.getRight());
+        return leftWeight + rightWeight + 1;
+    }
+
+    public void height() {
+        if (root == null) {
+            System.out.println("El árbol está vacío");
+        } else {
+            int height = heightR(root);
+            System.out.println("La altura del árbol es: " + height);
+        }
+    }
+
+    private int heightR(Node<T> current) {
+        if (current == null) {
+            // Altura de un árbol vacío es -1
+            return -1; 
+        }
+        int leftHeight = heightR(current.getLeft());
+        int rightHeight = heightR(current.getRight());
+        // Altura del nodo actual
+        return Math.max(leftHeight, rightHeight) + 1; 
+    }
+
+    public void levels() {
+        if (root == null) {
+            System.out.println("El árbol está vacío");
+        } else {
+            int levels = levelsR(root);
+            System.out.println("El número de niveles del árbol es: " + levels);
+        }
+    }
+
+    private int levelsR(Node<T> current) {
+        if (current == null) {
+            return 0; // Un árbol vacío tiene 0 niveles
+        }
+        int leftLevels = levelsR(current.getLeft());
+        int rightLevels = levelsR(current.getRight());
+        // El número de niveles es el máximo entre los niveles de los subárboles + 1 para el nodo actual
+        return Math.max(leftLevels, rightLevels) + 1; 
+    }
 
     // metodo recursivo para buscar un valor en el arbol
     private boolean binarySearchR(Node<T> current, T data) {
@@ -143,76 +221,86 @@ public class Tree<T extends Comparable<T>> {
     }
 
     // Metodos de recorrido en profundidad: preorden, inorden y postorden
-    public void inOrder() {
+    public String inOrder() {
         if (root == null) {
-            System.out.println("tree is empty.");
+            return null; // Árbol vacío
         } else {
-            inOrderR(root);
-            System.out.println(); // salto de línea al final
+            StringBuilder sb = new StringBuilder();
+            inOrderR(root, sb);
+            return sb.toString().trim();
         }
     }
 
-    private void inOrderR(Node<T> current) {
+    private void inOrderR(Node<T> current, StringBuilder sb) {
         if (current != null) {
-            inOrderR(current.getLeft()); // Recorre el subárbol izquierdo
-            System.out.print(current.getValue() + " "); // Muestra el valor del nodo actual
-            inOrderR(current.getRight()); // Recorre el subárbol derecho
+            inOrderR(current.getLeft(), sb); // Recorre el subárbol izquierdo
+            sb.append(current.getValue()).append(" "); // Agrega el valor del nodo actual
+            inOrderR(current.getRight(), sb); // Recorre el subárbol derecho
         }
     }
 
-    public void preOrder() {
+    public String preOrder() {
         if (root == null) {
-            System.out.println("tree is empty.");
+            return null; // Árbol vacío
         } else {
-            preOrderR(root);
-            System.out.println();
+            StringBuilder sb = new StringBuilder();
+            preOrderR(root, sb);
+            return sb.toString().trim();
         }
     }
 
-    private void preOrderR(Node<T> current) {
+    private void preOrderR(Node<T> current, StringBuilder sb) {
         if (current != null) {
-            System.out.print(current.getValue() + " "); // obtiene el valor del nodo actual
-            preOrderR(current.getLeft()); // subarbol izquierdo
-            preOrderR(current.getRight()); // subarbol derecho
+            sb.append(current.getValue()).append(" "); // Agrega el valor del nodo actual
+            preOrderR(current.getLeft(), sb); // subarbol izquierdo
+            preOrderR(current.getRight(), sb); // subarbol derecho
         }
     }
 
-    public void postOrder() {
+    public String postOrder() {
         if (root == null) {
-            System.out.println("tree is empty.");
+            return null; // Árbol vacío
         } else {
-            postOrderR(root);
-            System.out.println();
+            StringBuilder sb = new StringBuilder();
+            postOrderR(root, sb);
+            return sb.toString().trim();
         }
     }
 
-    private void postOrderR(Node<T> current) {
+    private void postOrderR(Node<T> current, StringBuilder sb) {
         if (current != null) {
-            postOrderR(current.getLeft()); // subarbol izquierdo
-            postOrderR(current.getRight()); // subarbol derecho
-            System.out.print(current.getValue() + " "); // obtiene el valor del nodo actual
+            postOrderR(current.getLeft(), sb); // subarbol izquierdo
+            postOrderR(current.getRight(), sb); // subarbol derecho
+            sb.append(current.getValue()).append(" "); // Agrega el valor del nodo actual
         }
     }
 
-    // pendiente de revision
-    // private int getHeight(Node<T> node) {
-    // if (node == null) {
-    // return 0;
-    // }
-    // return 1 + Math.max(getHeight(node.getLeft()), getHeight(node.getRight()));
-    // }
+    public String levelOrder() {
+        if (isEmpty())
+            return null; // Árbol vacío
 
-    // // Metodos de recorrido por niveles: por niveles o amplitud
-    // public void levelOrder() {
-    // if (root == null) {
-    // System.out.println("tree is empty.");
-    // } else {
-    // levelOrderR(root);
-    // System.out.println(); // salto de línea al final
-    // }
-    // }
+        Queue<Node<T>> queue = new LinkedList<>();
+        StringBuilder sb = new StringBuilder();
 
-    // private void levelOrderR(Node<T> current){
+        queue.add(root);
 
-    // }
+        while (!queue.isEmpty()) {
+            int size = queue.size(); // nodos en el nivel actual
+
+            for (int i = 0; i < size; i++) {
+                Node<T> current = queue.poll();
+
+                sb.append(current.getValue()).append(" ");
+
+                if (current.getLeft() != null)
+                    queue.add(current.getLeft());
+                if (current.getRight() != null)
+                    queue.add(current.getRight());
+            }
+            
+            sb.append("\n"); // salto de nivel
+        }
+
+        return sb.toString().trim(); // Retorna la cadena sin espacios al final
+    }
 }
