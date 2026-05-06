@@ -29,5 +29,7 @@ public class Main {
 
         lista.clear();
         System.out.println(lista);
+
+        
     }
 }

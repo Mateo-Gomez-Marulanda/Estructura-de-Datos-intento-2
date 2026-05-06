@@ -53,6 +53,9 @@ public class Main {
 
         System.out.println("\nVentas en orden de inserción:");
         registro.ordenarInsercion();
+
+    
+        
     }
 }
 
@@ -61,6 +64,7 @@ class RegistroVenta {
 
     public void registrarVenta(Venta venta) {
         ventas.put(venta.getCodigoProducto(), venta);
+        
     }
 
     public void consultarVenta(String codigo) {

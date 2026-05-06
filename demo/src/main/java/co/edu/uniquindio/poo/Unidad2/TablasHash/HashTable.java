@@ -1,5 +1,7 @@
 package co.edu.uniquindio.poo.Unidad2.TablasHash;
 
+import co.edu.uniquindio.poo.Unidad2.ListasSimples.SimpleEnlazada.SimpleLinkedList;
+
 public class HashTable<K, V> {
     private Node<K, V>[] table;
     private int size;
@@ -59,33 +61,36 @@ public class HashTable<K, V> {
      */
 
     private void resize() {
-        capacity *= 2; // se aumenta la capacidad al doble (norma general para tablas hash)
-        Node<K, V>[] newTable = new Node[capacity]; // nueva tabla con la nueva capacidad
+        int oldCapacity = capacity;
+        capacity *= 2; // Duplicamos la capacidad
+        Node<K, V>[] newTable = new Node[capacity]; // Nueva tabla más grande
 
-        for (Node<K, V> node : table) {
+        // Recorremos cada índice de la tabla antigua
+        for (int i = 0; i < oldCapacity; i++) {
+            Node<K, V> node = table[i];
+
+            // Recorremos la lista enlazada en ese índice
             while (node != null) {
-                // se calcula el indice apartir del primer nodo de la antiguia tabla
-                int index = calculateIndex(node.getKey());
+                // 1. Guardamos una referencia al siguiente nodo de la antigua tabla
+                // porque al mover 'node', perderíamos el acceso al resto de la lista.
+                Node<K, V> nextNodeInOldTable = node.getNext();
 
-                // se crea un nuevo nodo con la misma clave y valor del nodo actual
-                Node<K, V> newNode = new Node<>(node.getKey(), node.getValue());
+                // 2. Recalculamos el índice basado en la NUEVA capacidad
+                int newIndex = calculateIndex(node.getKey());
 
-                if (newTable[index] == null) {
-                    newTable[index] = newNode; // se agrega el nuevo nodo si la posicion esta vacia
-                } else {
-                    Node<K, V> current = newTable[index]; // referencia al nodo actual de la nueva tabla
+                // 3. REUTILIZAMOS el nodo: lo insertamos al INICIO de la lista en la nueva
+                // tabla.
+                // Esto es mucho más rápido que recorrer hasta el final.
+                node.setNext(newTable[newIndex]);
+                newTable[newIndex] = node;
 
-                    // se recorre la lista enlazada de la nueva tabla hasta encontrar el ultimo
-                    // nodo, y se agrega el nuevo nodo al final de la lista
-                    while (current.getNext() != null) {
-                        current = current.getNext();
-                    }
-                    current.setNext(newNode);
-                }
-                node = node.getNext();
+                // 4. Pasamos al siguiente nodo que habíamos guardado
+                node = nextNodeInOldTable;
             }
         }
-        table = newTable; // se asigna la nueva tabla a la tabla original
+
+        // 5. Finalmente, reemplazamos la tabla vieja por la nueva
+        table = newTable;
     }
 
     public void put(K key, V value) {
@@ -221,11 +226,48 @@ public class HashTable<K, V> {
         return false;
     }
 
-    // metodos para poder recorrer la hashtable
-    // quedan pendientes puesto que toca usar otras estrucutras de datos para
-    // almacenar key, value y pares.
-    // pendiente veridicacion de uso de:
-    // - arreglo + Object / indexacion
-    // - lista + iteracion de la lista
+    // retorna una lista de todas las claves de la tabla
+    public SimpleLinkedList<K> keySet() {
+        SimpleLinkedList<K> keys = new SimpleLinkedList<>();
 
+        for (int i = 0; i < table.length; i++) {
+            Node<K, V> current = table[i]; // referencia al primer elemento del bucket
+
+            while (current != null) { // recorrer todo el bucket
+                keys.add(current.getKey()); // se agrega a la lista de claves
+                current = current.getNext(); // se pasa a la siguiente posicion
+            }
+        }
+        return keys; // retornar la lista de claves
+    }
+
+    // retorna una lista de todos los valores de la tabla
+    public SimpleLinkedList<V> values() {
+        SimpleLinkedList<V> values = new SimpleLinkedList<>();
+
+        for (int i = 0; i < table.length; i++) {
+            Node<K, V> current = table[i]; // referencia al primer elemento del bucket
+
+            while (current != null) { // recorrer todo el bucket
+                values.add(current.getValue()); // se agrega a la lista de valores
+                current = current.getNext(); // se pasa a la siguiente posicion
+            }
+        }
+        return values; // retornar la lista de valores
+    }
+
+    // retorna una lista de todos los pares de la tabla
+    public SimpleLinkedList<Node<K, V>> entrySet() {
+        SimpleLinkedList<Node<K, V>> pairs = new SimpleLinkedList<>();
+
+        for (int i = 0; i < table.length; i++) {
+            Node<K, V> current = table[i]; // referencia al primer elemento del bucket
+
+            while (current != null) { // recorrer todo el bucket
+                pairs.add(current); // se agrega a la lista de pares
+                current = current.getNext(); // se pasa a la siguiente posicion
+            }
+        }
+        return pairs; // retornar la lista de pares
+    }
 }

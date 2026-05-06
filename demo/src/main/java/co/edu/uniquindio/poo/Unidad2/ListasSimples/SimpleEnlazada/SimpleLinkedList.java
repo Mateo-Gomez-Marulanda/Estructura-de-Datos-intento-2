@@ -12,10 +12,7 @@ public class SimpleLinkedList<T> implements Iterable<T> {
     }
 
     public boolean isEmpty() {
-        if (size == 0) {
-            return true;
-        }
-        return false;
+        return size == 0;
     }
 
     public int size() {
@@ -46,7 +43,7 @@ public class SimpleLinkedList<T> implements Iterable<T> {
         size++;
     }
 
-    public void addLast(T data) {
+    public void add(T data) {
         Node<T> newNode = new Node<>(data);
 
         if (isEmpty()) {
@@ -57,8 +54,9 @@ public class SimpleLinkedList<T> implements Iterable<T> {
                 aux = aux.getNextNode();
             }
             aux.setNextNode(newNode);
-            size++;
+
         }
+        size++;
     }
 
     public void add(T data, int index) {
@@ -66,17 +64,13 @@ public class SimpleLinkedList<T> implements Iterable<T> {
             throw new RuntimeException("error index");
         }
 
-        if (isEmpty()) {
-            throw new RuntimeException("list is empty");
-        } else {
-            if (index == 0) {
-                addFirst(data);
-                return;
-            }
-            if (index == size) {
-                addLast(data);
-                return;
-            }
+        if (index == 0) {
+            addFirst(data);
+            return;
+        }
+        if (index == size) {
+            add(data);
+            return;
         }
 
         Node<T> aux = first;
@@ -105,18 +99,22 @@ public class SimpleLinkedList<T> implements Iterable<T> {
     public void removeLast() {
         if (isEmpty()) {
             throw new RuntimeException("list is empty");
+        }
+
+        if (size == 1) {
+            first = null;
         } else {
             Node<T> aux = first;
             while (aux.getNextNode().getNextNode() != null) {
                 aux = aux.getNextNode();
             }
             aux.setNextNode(null);
-            size--;
         }
+        size--;
     }
 
     // elimina en base al indice
-    public void removeIndex(int index) {
+    public void remove(int index) {
         if (!validIndex(index)) {
             throw new RuntimeException("error index");
         }
@@ -135,7 +133,7 @@ public class SimpleLinkedList<T> implements Iterable<T> {
         }
 
         Node<T> aux = first;
-        for (int i = 1; i == index - 1; i++) {
+        for (int i = 1; i < index - 1; i++) {
             aux = aux.getNextNode();
         }
 
@@ -144,7 +142,7 @@ public class SimpleLinkedList<T> implements Iterable<T> {
     }
 
     // eliminar en base al dato
-    public void removeElement(T data) {
+    public void remove(T data) {
         if (isEmpty()) {
             throw new RuntimeException("list is empty");
         }
@@ -185,9 +183,6 @@ public class SimpleLinkedList<T> implements Iterable<T> {
 
     // OBTIENE EL INDICE SEGUN EL DATO
     public int indexOf(T data) {
-        if (isEmpty()) {
-            throw new RuntimeException("list is empty");
-        }
 
         Node<T> aux = first;
         int cont = 0;
@@ -218,78 +213,21 @@ public class SimpleLinkedList<T> implements Iterable<T> {
         aux.setdata(newData);
     }
 
-    // NI PERRA IDEA QUE HACE PERO SUPUESTAMENTE ORDENA
-    @SuppressWarnings("unchecked")
-    public void sortList() {
-        if (isEmpty() || size == 1) {
-            return;
-        }
-
-        boolean swapped;
-        do {
-            swapped = false;
-            Node<T> aux = first;
-
-            while (aux.getNextNode() != null) {
-                Comparable<T> currentData = (Comparable<T>) aux.getdata();
-                int comparison = currentData.compareTo(aux.getNextNode().getdata());
-
-                if (comparison > 0) {
-                    T temp = aux.getdata();
-                    aux.setdata(aux.getNextNode().getdata());
-                    aux.getNextNode().setdata(temp);
-                    swapped = true;
-                }
-                aux = aux.getNextNode();
-            }
-        } while (swapped);
-    }
-
-    // IMPRIME LA LISTA DE TAL FORMA QUE QUEDE SIMILARA UNA LISTA PROPIA DE JAVA
-    public void printList() {
+    public boolean contains(T data) {
         Node<T> aux = first;
-        String message = "[";
-        do {
-            message += aux.getdata() + " ";
-            aux = aux.getNextNode();
-        } while (aux != null);
 
-        message += "]";
-        System.out.println(message);
+        while (aux != null) {
+            if (aux.getdata().equals(data)) {
+                return true;
+            }
+            aux = aux.getNextNode();
+        }
+        return false;
     }
 
     // ITERADOR PROPIO PARA PODER USAR FOR-EACH O DEMAS METODOS ITERABLE
     @Override
     public Iterator<T> iterator() {
-        if (isEmpty()) {
-            throw new RuntimeException("list is empty");
-        }
-
         return new SimpleLinkedListIterator<T>(first);
     }
-
-    // CASOS RECURSIVOS
-    public void reverse() {
-        if (isEmpty() || size == 1) {
-            return;
-        }
-        first = reverseRecursive(first);
-    }
-
-    private Node<T> reverseRecursive(Node<T> node) {
-        // base case: last node becomes new head
-        if (node.getNextNode() == null) {
-            return node;
-        }
-        Node<T> head = reverseRecursive(node.getNextNode());
-
-        // reverse the link
-        node.getNextNode().setNextNode(node);
-
-        // set current.next to null (important for the original head)
-        node.setNextNode(null);
-
-        return head;
-    }
-
 }

@@ -15,17 +15,17 @@ public class Main {
 
         integers.add(37, 2);
         System.out.println("\nel tamano de la lista es: " + integers.size());
-        integers.printList();
+       // integers.printList();
 
         System.out.println("\nLa lista esta vacia? " + integers.isEmpty());
 
         integers.removeFirst();
         integers.removeLast();
-        integers.printList();
+       // integers.printList();
 
-        integers.addLast(13);
-        integers.removeIndex(2);
-        integers.printList();
+        // integers.addLast(13);
+        // integers.removeIndex(2);
+        // integers.printList();
 
         System.out.println("\nvalor en la posicion 3: " + integers.get(3));
 
@@ -33,12 +33,12 @@ public class Main {
 
         System.out.println();
 
-        integers.removeElement(3);
-        integers.printList();
+        // integers.removeElement(3);
+        // integers.printList();
 
         System.out.println("\ninvertir lista");
-        integers.reverse();
-        integers.printList();
+        // integers.reverse();
+        // integers.printList();
 
         for (Integer data : integers) {
             System.out.println(data);
