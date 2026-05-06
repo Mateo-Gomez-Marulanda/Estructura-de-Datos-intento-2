@@ -1,4 +1,4 @@
-package co.edu.uniquindio.poo.Unidad3.Grafo;
+package co.edu.uniquindio.poo.Unidad3.Grafo.GrafoBase;
 
 //clase vertice que representa la conexion dirigda entre vertices 
 public class Edge<T> {
